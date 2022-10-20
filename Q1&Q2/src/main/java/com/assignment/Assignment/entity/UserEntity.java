@@ -3,12 +3,13 @@ package com.assignment.Assignment.entity;
 import com.assignment.Assignment.dto.UserEntityDto;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
 public class UserEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "user_id", nullable = false)
     private int id;
     @Column(name = "first_name", nullable = false)
@@ -24,6 +25,10 @@ public class UserEntity {
     private String password;
     @Column( nullable = false)
     private int age;
+
+    @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private Set<UserPermissionEntity> userPermissionEntities;
 
     public UserEntity() {
     }
@@ -103,4 +108,15 @@ public class UserEntity {
         this.age = age;
     }
 
+    public Set<UserPermissionEntity> getUserPermissionEntities() {
+        return userPermissionEntities;
+    }
+
+    public void setUserPermissionEntities(Set<UserPermissionEntity> userPermissionEntities) {
+        this.userPermissionEntities = userPermissionEntities;
+    }
+
+    public UserEntity(Set<UserPermissionEntity> userPermissionEntities) {
+        this.userPermissionEntities = userPermissionEntities;
+    }
 }
