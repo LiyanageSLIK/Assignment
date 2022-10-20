@@ -3,6 +3,7 @@ package com.assignment.Assignment.service;
 
 import com.assignment.Assignment.dto.UserEntityDto;
 import com.assignment.Assignment.entity.UserEntity;
+import com.assignment.Assignment.repository.PermissionRepo;
 import com.assignment.Assignment.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -15,6 +16,8 @@ import java.util.List;
 public class UserService {
     @Autowired
     private UserRepo userRepo;
+    @Autowired
+    private PermissionRepo permissionRepo;
 
 
     public UserEntityDto getById(int id) throws Exception {
@@ -67,6 +70,29 @@ public class UserService {
         UserEntity userEntity= new UserEntity(userEntityDto);
         userEntity.setId(id);
         return new UserEntityDto(userRepo.save(userEntity));
+    }
+
+    public UserEntityDto addPermission(UserEntityDto userEntityDto, int id) throws Exception {
+        if (!userEntityDto.isPermissionAddable(id)) {
+            throw new Exception("Missing some properties for given User");
+        }
+        if (!userRepo.existsById(id)) {
+            throw new Exception("User not exists for ID:" + id);
+        }
+        if (!userRepo.existsUserEntityByUserName(userEntityDto.getUserName())) {
+            throw new Exception("User not exists for User name:" + userEntityDto.getUserName());
+        }
+        String name=(userRepo.getById(id).getUserName());
+        if (!(userEntityDto.getUserName()).equals(name)) {
+            throw new Exception("User Name and User ID mismatch");
+        }
+        if (!permissionRepo.existsByName(userEntityDto.getPermissionName())) {
+            throw new Exception("Permission type not exists");
+        }
+
+        UserEntity userEntity1= userRepo.getById(id);
+        userEntity1.addPermission(permissionRepo.getByName(userEntityDto.getPermissionName()));
+        return new UserEntityDto(userRepo.save(userEntity1));
     }
 
     public UserEntityDto updateByEmail(UserEntityDto userEntityDto, String email) throws Exception {

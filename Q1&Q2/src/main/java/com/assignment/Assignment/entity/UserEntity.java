@@ -9,7 +9,7 @@ import java.util.Set;
 @Table(name = "user")
 public class UserEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id", nullable = false)
     private int id;
     @Column(name = "first_name", nullable = false)
@@ -26,13 +26,18 @@ public class UserEntity {
     @Column( nullable = false)
     private int age;
 
-    @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
-    private Set<UserPermissionEntity> userPermissionEntities;
+    @ManyToMany
+    @JoinTable(
+            name = "user_permission",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id"))
+    private Set<PermissionEntity> givenPermissions;
 
     public UserEntity() {
     }
-
+    public void addPermission(PermissionEntity permissionEntity) {
+        this.givenPermissions.add(permissionEntity);
+    }
 
     public UserEntity(UserEntityDto userEntityDto) {
         this.firstName=userEntityDto.getFirstName();
@@ -42,7 +47,10 @@ public class UserEntity {
         this.userName = userEntityDto.getUserName();
         this.password = userEntityDto.getPassword();
         this.age = userEntityDto.getAge();
+
     }
+
+
 
     public int getId() {
         return id;
@@ -108,15 +116,12 @@ public class UserEntity {
         this.age = age;
     }
 
-    public Set<UserPermissionEntity> getUserPermissionEntities() {
-        return userPermissionEntities;
+    public Set<PermissionEntity> getGivenPermissions() {
+        return givenPermissions;
     }
 
-    public void setUserPermissionEntities(Set<UserPermissionEntity> userPermissionEntities) {
-        this.userPermissionEntities = userPermissionEntities;
+    public void setGivenPermissions(Set<PermissionEntity> givenPermissions) {
+        this.givenPermissions = givenPermissions;
     }
 
-    public UserEntity(Set<UserPermissionEntity> userPermissionEntities) {
-        this.userPermissionEntities = userPermissionEntities;
-    }
 }

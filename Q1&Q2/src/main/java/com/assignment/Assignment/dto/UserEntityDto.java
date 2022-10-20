@@ -1,8 +1,10 @@
 package com.assignment.Assignment.dto;
 
+import com.assignment.Assignment.entity.PermissionEntity;
 import com.assignment.Assignment.entity.UserEntity;
 
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  * A DTO for the {@link com.assignment.Assignment.entity.UserEntity} entity
@@ -16,6 +18,9 @@ public class UserEntityDto implements Serializable {
     private String userName;
     private String password;
     private int age;
+    private String permissionName;
+
+    private Set<PermissionEntity> givenPermissions;
 
     public UserEntityDto() {
     }
@@ -29,11 +34,16 @@ public class UserEntityDto implements Serializable {
         this.userName = userEntity.getUserName();
         this.password = userEntity.getPassword();
         this.age = userEntity.getAge();
+        this.givenPermissions=userEntity.getGivenPermissions();
     }
 
     public boolean isValid(int id){
         return (this.id ==id||!this.firstName.isEmpty()||!this.lastName.isEmpty()
                 ||!this.email.isEmpty()||!this.userName.isEmpty()||!this.password.isEmpty()||this.age>0);
+    }
+
+    public boolean isPermissionAddable(int id){
+        return (!this.userName.isEmpty()||id>0||!this.permissionName.isEmpty());
     }
 
     public int getId() {
@@ -106,6 +116,22 @@ public class UserEntityDto implements Serializable {
     public UserEntityDto setAge(int age) {
         this.age = age;
         return this;
+    }
+
+    public Set<PermissionEntity> getGivenPermissions() {
+        return givenPermissions;
+    }
+
+    public void setGivenPermissions(Set<PermissionEntity> givenPermissions) {
+        this.givenPermissions = givenPermissions;
+    }
+
+    public String getPermissionName() {
+        return permissionName;
+    }
+
+    public void setPermissionName(String permissionName) {
+        this.permissionName = permissionName;
     }
 
 }

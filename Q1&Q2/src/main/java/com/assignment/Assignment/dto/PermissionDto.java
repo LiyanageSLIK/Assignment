@@ -1,6 +1,7 @@
 package com.assignment.Assignment.dto;
 
 import com.assignment.Assignment.entity.PermissionEntity;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
@@ -14,7 +15,7 @@ public class PermissionDto implements Serializable {
     public PermissionDto() {
     }
 
-    public PermissionDto(PermissionEntity permissionEntity) {
+    public PermissionDto(@NotNull PermissionEntity permissionEntity) {
         this.id= permissionEntity.getId();
         this.name=permissionEntity.getName();
     }
@@ -46,4 +47,5 @@ public class PermissionDto implements Serializable {
         this.name = name;
         return this;
     }
+
 }

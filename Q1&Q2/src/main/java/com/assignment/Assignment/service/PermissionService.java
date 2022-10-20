@@ -16,11 +16,11 @@ public class PermissionService {
         if (!permissionDto.isValid()) {
             throw new Exception("Missing some properties for given Permission");
         }
-            if (permissionRepo.existsByName(permissionDto.getName())) {
-                throw new Exception("Given Permission Name Already exists");
-            }
-            PermissionEntity permissionEntity = new PermissionEntity(permissionDto);
-            return new PermissionDto(permissionRepo.save(permissionEntity));
+        if (permissionRepo.existsByName(permissionDto.getName())) {
+            throw new Exception("Given Permission Name Already exists");
+        }
+        PermissionEntity permissionEntity = new PermissionEntity(permissionDto);
+        return new PermissionDto(permissionRepo.save(permissionEntity));
 
     }
 

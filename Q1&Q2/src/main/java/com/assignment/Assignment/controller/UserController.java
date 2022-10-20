@@ -54,6 +54,15 @@ public class UserController {
         }
     }
 
+    @PutMapping("/permission/{id}")
+    public ResponseWrapper addPermission(@RequestBody UserEntityDto userEntityDto, @PathVariable(value = "id") int id) {
+        try {
+            return new ResponseWrapper(200, userService.addPermission(userEntityDto, id),"Successfully add Permission");
+        } catch (Exception e) {
+            return new ResponseWrapper(400, e.getMessage());
+        }
+    }
+
     @PutMapping("/email/{email}")
     public ResponseWrapper updateById(@RequestBody UserEntityDto userEntityDto, @PathVariable(value = "email") String email) {
         try {

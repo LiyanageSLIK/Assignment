@@ -8,15 +8,15 @@ import java.util.Set;
 @Table(name = "permission")
 public class PermissionEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "permission_id", nullable = false)
     private int id;
     @Column(name = "permission_name", nullable = false,unique=true)
     private String name;
 
-    @OneToMany(mappedBy = "permissionEntity", fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
-    private Set<UserPermissionEntity> userPermissionEntities;
+
+    @ManyToMany
+    private Set<UserEntity> givenUsers;
 
     public PermissionEntity(String name) {
 
@@ -38,18 +38,6 @@ public class PermissionEntity {
         this.id = id;
     }
 
-    public Set<UserPermissionEntity> getUserPermissionEntities() {
-        return userPermissionEntities;
-    }
-
-    public void setUserPermissionEntities(Set<UserPermissionEntity> userPermissionEntities) {
-        this.userPermissionEntities = userPermissionEntities;
-    }
-
-    public PermissionEntity(String name, Set<UserPermissionEntity> userPermissionEntities) {
-        this.name = name;
-        this.userPermissionEntities = userPermissionEntities;
-    }
 
     public String getName() {
         return name;
@@ -58,4 +46,13 @@ public class PermissionEntity {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Set<UserEntity> getGivenUsers() {
+        return givenUsers;
+    }
+
+    public void setGivenUsers(Set<UserEntity> givenUsers) {
+        this.givenUsers = givenUsers;
+    }
+
 }

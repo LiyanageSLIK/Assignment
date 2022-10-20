@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface PermissionRepo extends JpaRepository<PermissionEntity, Integer> {
 
     boolean existsByName(String name);
+
+    PermissionEntity getByName(String name);
 }
